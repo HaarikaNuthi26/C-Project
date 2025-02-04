@@ -1,24 +1,17 @@
-/******************************************************************************
-
-                            Online C Compiler.
-                Code, Compile, Run and Debug C program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
-*******************************************************************************/
-
 #include <stdio.h>
 #include<ctype.h>
 #include<string.h>
 #include<stdlib.h>
 #define MAX_votes 15
-    int c1=0,c2=0,c3=0,c4=0,c5=0;
-int eligibility(int age,char id);
-void casting_vote(char v);
+static int c1=0,c2=0,c3=0,c4=0,c5=0;
+//int eligibility(int age,char id);
+void casting_vote(int v);
 int counting(int c1,int c2,int c3,int c4,int c5);
 int main()
 {
-    int age,e;
-    char id[10], name[40],votes;
+    int age;
+    char id[10], name[40];
+    int votes;
     char cand1[30]="Aravind Kejriwal";
     char cand2[30]="Parvesh Singh";
     char cand3[30]="Ramesh Bidhuri";
@@ -31,33 +24,7 @@ int main()
     printf("Enter age:\n");
     scanf("%d",&age);
     printf("Enter VoterId:\n");
-    //for(int i =0;i<10;i++){
-        scanf("%[^\f]s",id);
-    //}
-    
-    //printf("%s",id);
-    e=eligibility(age,id);
-    if(e==0){
-        printf("You are not eligible\n");
-        break;
-    }
-    else{
-        printf("CANDIDATE LIST:\n");
-        printf("Enter 1 for %s\nEnter 2 for %s\nEnter 3 for %s\nEnter 4 for %s\nEnter 5 for %s\n",cand1,cand2,cand3,cand4,cand5);
-        printf("Enter your vote:\n");
-        scanf("%c",&votes);
-        casting_vote(votes);
-        printf("YOUR VOTE CASTED SUCCESSFULLY..!!!");
-        int result=counting(c1,c2,c3,c4,c5);
-        printf("Maximum votes : %d\n",result);
-    
-    }
-    }
-    
-    return 0;
-
-}
-int eligibility(int age,char id){
+    scanf("%s",id);
     char Alpha[4],Digit[8];
     int flag=0;
     if(age>=18)
@@ -70,7 +37,7 @@ int eligibility(int age,char id){
             Digit[7]='\0';
         for(int i=0;Alpha[i]!='\0';i++)    
         {
-             if(!isalpha(Alpha[i]))
+             if(!isalpha(Alpha[i]) && !(islower(Alpha[i])))
              {
                 flag=1;
                  break;
@@ -86,48 +53,84 @@ int eligibility(int age,char id){
         }
         //if(flag==0)
         //printf("You are eligible to vote\n");
-     }
+     }else flag=1;
     }
-     else
-     {
-         flag=1;
-       //  printf("You are not eligible\n");
-     }
-     return flag;
+     else{
+        printf("\nYou are not eligible\n\n");
+        break;
+     } 
+    if(flag==1){
+        printf("You are not eligible\n\n");
+        break;
+    }
+    else{
+        printf("\n\nYou are eligible...!\n");
+        printf("\nCANDIDATE LIST:\n");
+        printf("Enter 1 for Aravind Kejriwal\nEnter 2 for %s\nEnter 3 for %s\nEnter 4 for %s\nEnter 5 for %s\nEnter 6 to exit\n\n",cand2,cand3,cand4,cand5);
+        printf("Enter your vote:\n");
+        scanf("%d",&votes);
+        casting_vote(votes);
+        
+        int result=counting(c1,c2,c3,c4,c5);
+        switch(result){
+            case 1: printf("Winner is Aravind Kejriwal\n");
+                    break;
+            case 2: printf("Winner is %s\n",cand2);
+                    break;
+            case 3: printf("Winner is %s\n",cand3);
+                    break;
+            case 4: printf("Winner is %s\n",cand4);
+                    break;
+            case 5: printf("Winner is %s\n",cand5);
+                    break;
+           default: break;
+        }
+    
+    }
+    }
+    
+    return 0;
+
 }
-void casting_vote(char v){
+
+void casting_vote(int v){
     
     switch(v){
-        case '1': c1+=1;
+        case 1:  c1+=1;
+                printf("YOUR VOTE CASTED SUCCESSFULLY..!!!\n");
                     break;
-        case '2': c2+=1;
+        case 2: c2+=1;
+                printf("YOUR VOTE CASTED SUCCESSFULLY..!!!\n");
                     break;
-        case '3' : c3+=1;
+        case 3 : c3+=1;
+                printf("YOUR VOTE CASTED SUCCESSFULLY..!!!\n");
                     break;
-        case '4' : c4+=1;
+        case 4 : c4+=1;
+                printf("YOUR VOTE CASTED SUCCESSFULLY..!!!\n");
                     break;
-        case '5' : c5+=1;
+        case 5 : c5+=1;
+                printf("YOUR VOTE CASTED SUCCESSFULLY..!!!\n");
                     break;
-        default : printf("Invalid Candidate\n");
-                 exit(0);
+        case 6 : printf("tq"); 
+                break;
+        default  : printf("Invalid Candidate\n");
+                   break;
     }
   
 }
 int counting(int c1,int c2,int c3,int c4,int c5){
     int arr[5] ={c1,c2,c3,c4,c5};
     int MAX=arr[0];
+    int pos=0;
+    //printf("%d %d %d %d %d\n",c1,c2,c3,c4,c5);
     for(int i=0;i<5;i++)
     {
-        
         if(MAX<arr[i])
         {
             MAX=arr[i];
+            pos=i;
         }
     }
-    return MAX;
+    //printf("%d\n",MAX);
+    return pos+1;
 }
-
-
-    
-
-    
